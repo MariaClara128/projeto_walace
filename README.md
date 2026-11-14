@@ -1,6 +1,6 @@
 # Projeto de Estrutura de Dados II
 
-Projeto desenvolvido em equipe para a disciplina de Estrutura de Dados II, utilizando Java.
+Projeto desenvolvido em equipe para a disciplina de Estrutura de Dados II, utilizando Java e python
 
 O trabalho está dividido em duas partes:
 

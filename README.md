@@ -31,6 +31,7 @@ Implementação de uma estrutura de dados utilizando Tabela Hash, conforme as or
 ## Tecnologias utilizadas
 
 - Java;
+- Python;
 - IDE de desenvolvimento Java;
 - Estruturas de dados e algoritmos.
 

@@ -34,7 +34,6 @@ Implementação de uma estrutura de dados utilizando Tabela Hash, conforme as or
 - IDE de desenvolvimento Java;
 - Estruturas de dados e algoritmos.
 
-**IA utilizada:** ChatGPT (OpenAI), como apoio às simulações, compreensão dos algoritmos e revisão do código.
 
 ## Integrantes
 

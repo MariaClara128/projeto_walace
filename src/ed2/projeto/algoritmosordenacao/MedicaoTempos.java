@@ -2,77 +2,75 @@ package ed2.projeto.algoritmosordenacao;
 
 public class MedicaoTempos {
 
-  private static final int REPETICOES = 5;
+    public static void main(String[] args) {
 
-  public static void main(String[] args) {
+        int[] tamanhos = {10, 100, 1000, 10000, 100000};
 
-    int[] tamanhos = { 10, 100, 1000, 10000, 100000 };
+        IAlgoritmoOrdenacao[] algoritmos = {
+            new BubbleSort(),
+            new InsertionSort(),
+            new SelectionSort(),
+            new MergeSort(),
+            new QuickSort()
+        };
 
-    IAlgoritmoOrdenacao[] algoritmos = {
-      new BubbleSort(),
-      new InsertionSort(),
-      new SelectionSort(),
-      new MergeSort(),
-      new QuickSort()
-    };
+        aquecer(algoritmos);
 
-    aquecer( algoritmos );
+        System.out.println("TEMPOS MEDIDOS (media das execucoes, em ms)");
+        System.out.println("Repeticoes: 5 para ate 10.000 elementos e 2 para 100.000.");
 
-    System.out.println("TEMPOS MEDIDOS (media de " + REPETICOES + " execucoes, em ms)");
-    System.out.printf("%-15s", "Algoritmo");
+        System.out.printf("%-15s", "Algoritmo");
 
-    for(int t = 0; t < tamanhos.length; t++) {
+        for (int tamanho : tamanhos) {
+            System.out.printf("%15s", "n=" + tamanho);
+        }
 
-      System.out.printf("%15s", "n=" + tamanhos[t]);
+        System.out.println();
 
-    } // FOR TAMANHOS
+        for (int a = 0; a < algoritmos.length; a++) {
 
-    System.out.println();
+            System.out.printf("%-15s", algoritmos[a]);
 
-    for(int a = 0; a < algoritmos.length; a++) {
+            for (int tamanho : tamanhos) {
 
-      System.out.printf("%-15s", algoritmos[a]);
+                int repeticoes = (tamanho == 100000) ? 2 : 5;
 
-      for(int t = 0; t < tamanhos.length; t++) {
+                double soma = 0;
 
-        double soma = 0;
+                for (int r = 0; r < repeticoes; r++) {
 
-        for(int r = 0; r < REPETICOES; r++) {
+                    int[] vetor = Utils.gerarVetor(
+                        tamanho, 1000000
+                    );
 
-          int[] vetor = Utils.gerarVetor( tamanhos[t], 1000000 );
+                    long inicio = System.nanoTime();
 
-          long inicio = System.nanoTime();
+                    algoritmos[a].ordenarVetor(vetor);
 
-          algoritmos[a].ordenarVetor( vetor );
+                    long fim = System.nanoTime();
 
-          long fim = System.nanoTime();
+                    soma += (fim - inicio) / 1000000.0;
+                }
 
-          soma = soma + ( fim - inicio ) / 1000000.0;
+                double media = soma / repeticoes;
 
-        } // FOR REPETICOES
+                System.out.printf("%15.4f", media);
+            }
 
-        System.out.printf("%15.4f", soma / REPETICOES);
+            System.out.println();
+        }
+    }
 
-      } // FOR TAMANHOS
+    private static void aquecer(IAlgoritmoOrdenacao[] algoritmos) {
 
-      System.out.println();
+        for (int i = 0; i < 3; i++) {
 
-    } // FOR ALGORITMOS
+            for (int a = 0; a < algoritmos.length; a++) {
 
-  }
+                int[] vetor = Utils.gerarVetor(200, 1000000);
 
-  private static void aquecer(IAlgoritmoOrdenacao[] algoritmos) {
-
-    for(int i = 0; i < 20; i++) {
-
-      for(int a = 0; a < algoritmos.length; a++) {
-
-        algoritmos[a].ordenarVetor( Utils.gerarVetor( 2000, 1000000 ) );
-
-      } // FOR ALGORITMOS
-
-    } // FOR AQUECIMENTO
-
-  }
-
+                algoritmos[a].ordenarVetor(vetor);
+            }
+        }
+    }
 }

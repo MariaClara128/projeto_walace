@@ -17,7 +17,7 @@ Implementação de cinco algoritmos de ordenação:
 ### Funcionalidades
 - Entrada manual de números;
 - Geração automática de números;
-- Leitura de arquivos TXT, caso implementada;
+- Leitura de números a partir de arquivo TXT (dados/numeros.txt);
 - Escolha do algoritmo de ordenação;
 - Exibição dos dados de entrada e saída;
 - Exibição de até 100 elementos em grandes volumes de dados;
@@ -50,3 +50,7 @@ A implementação deve seguir as orientações fornecidas pelo professor.
 ## OBJETIVO
 
 Aplicar os conhecimentos de algoritmos de ordenação e estruturas de dados, compreendendo o funcionamento das implementações e analisando seu desempenho.
+
+## Documentação
+
+A explicação detalhada dos algoritmos, do programa, dos testes e das simulações está na pasta docs/ (comece por docs/README.md).

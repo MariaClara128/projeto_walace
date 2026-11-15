@@ -1,95 +1,103 @@
 # Simulações de desempenho
 
-Este documento compara o desempenho dos cinco algoritmos para entradas de tamanho **n, n², n³ e n¹⁰**, usando **n = 10**:
+Este documento apresenta as medições e as estimativas de desempenho dos cinco algoritmos de ordenação para entradas de tamanho **n, n², n³ e n¹⁰**, considerando **n = 10**.
 
 | | n | n² | n³ | n¹⁰ |
-|---|---|---|---|---|
-| Quantidade de elementos | 10 | 100 | 1 000 | 10 000 000 000 (10¹⁰) |
+|---|---:|---:|---:|---:|
+| Quantidade de elementos | 10 | 100 | 1.000 | 10.000.000.000 (10¹⁰) |
 
-Os números aqui são de dois tipos, que **não devem ser confundidos**:
+É importante distinguir os dois tipos de resultado:
 
-- **Tempo medido** — o programa realmente executou e o tempo foi cronometrado.
-- **Tempo estimado** — calculado pela IA a partir da complexidade de cada algoritmo; o algoritmo não foi executado nesse tamanho.
+- **Tempo medido:** o algoritmo foi executado e o tempo foi cronometrado.
+- **Tempo estimado:** valor calculado por extrapolação da complexidade, sem executar o algoritmo nesse tamanho.
 
 ## IA utilizada
 
 - **IA:** Claude Opus 5.5 (Anthropic), modelo `claude-opus-5-5`, usado pelo Claude Code.
-- **Como foi feito:** o código-fonte de cada algoritmo foi fornecido à IA, que identificou a complexidade de cada um (O(n²) para Bubble, Insertion e Selection; O(n log n) para Merge e Quick) e calculou os tempos estimados ajustando essas fórmulas a uma medição real de referência (n = 100 000), descrita abaixo.
+- **Procedimento:** os códigos-fonte dos algoritmos foram fornecidos à IA. A partir das complexidades consideradas — O(n²) para Bubble Sort, Insertion Sort e Selection Sort; O(n log n) para Merge Sort e Quick Sort — foram calculadas estimativas usando como referência os tempos medidos para 100.000 elementos.
 
-## Ambiente das medições
+## Ambiente e metodologia das medições
 
-- Processador: AMD Ryzen 7 5700U
-- Java: OpenJDK 25
-- Programa: `MedicaoTempos.java` — dados aleatórios entre 1 e 1 000 000, média de 5 execuções por tamanho, com uma fase de "aquecimento" antes para que a JVM já tenha compilado o código.
+- **Processador:** AMD Ryzen 7 5700U.
+- **Java:** OpenJDK 25.
+- **Programa:** `MedicaoTempos.java`.
+- **Dados:** vetores gerados aleatoriamente, com valores entre 1 e 1.000.000.
+- **Aquecimento:** 3 execuções por algoritmo com vetores de 200 elementos.
+- **Repetições da medição:** 5 execuções para cada tamanho até 10.000 elementos e 2 execuções para 100.000 elementos. Foi utilizada essa quantidade menor no maior vetor para reduzir o tempo total da medição.
+- **Resultado apresentado:** média aritmética dos tempos das execuções realizadas para cada combinação de algoritmo e tamanho.
 
 ## 1. Tempos medidos
 
-Valores em **milissegundos**, média de 5 execuções.
+Valores em **milissegundos (ms)**, conforme a execução mais recente do programa:
 
-| Algoritmo | n = 10 | n = 100 | n = 1 000 | n = 10 000 | n = 100 000 |
-|---|---|---|---|---|---|
-| Bubble Sort | 0,0004 | 0,0153 | 1,0277 | 121,33 | 17 703,65 (≈ 17,7 s) |
-| Insertion Sort | 0,0003 | 0,0019 | 0,0676 | 5,97 | 607,52 |
-| Selection Sort | 0,0004 | 0,0051 | 0,2220 | 18,41 | 1 817,99 (≈ 1,8 s) |
-| Merge Sort | 0,0008 | 0,0086 | 0,0858 | 0,98 | 11,62 |
-| Quick Sort | 0,0008 | 0,0043 | 0,0512 | 0,59 | 6,88 |
+| Algoritmo | n = 10 | n = 100 | n = 1.000 | n = 10.000 | n = 100.000 |
+|---|---:|---:|---:|---:|---:|
+| Bubble Sort | 0,0010 | 0,0331 | 1,4478 | 87,3622 | 17.346,9457 |
+| Insertion Sort | 0,0018 | 0,0583 | 0,9411 | 15,8244 | 534,3241 |
+| Selection Sort | 0,0381 | 0,0613 | 0,9717 | 18,0351 | 1.690,7390 |
+| Merge Sort | 0,0017 | 0,0123 | 0,1320 | 4,0593 | 24,1593 |
+| Quick Sort | 0,0017 | 0,0259 | 0,1624 | 1,0434 | 10,6108 |
 
-Os tempos variam um pouco a cada execução e de um computador para outro, mas a ordem entre os algoritmos se mantém.
+Os valores são específicos do computador e das condições dessa execução. Podem variar em novas execuções. Para 100.000 elementos, a média foi calculada com 2 repetições; para os demais tamanhos, com 5.
 
-## 2. Tempos estimados pela IA
+## 2. Estimativas de tempo
 
-### Como a estimativa é calculada
+As estimativas abaixo usam o tempo medido para **100.000 elementos** como referência (`n₀ = 100.000`) e aplicam uma aproximação baseada na complexidade assintótica:
 
-Usando o tempo medido em n₀ = 100 000 como referência:
+- **O(n²):** `T(n) ≈ T(n₀) × (n / n₀)²`.
+- **O(n log n):** `T(n) ≈ T(n₀) × [n log₂(n) / (n₀ log₂(n₀))]`.
 
-- **Algoritmos O(n²):** T(n) ≈ T(n₀) × (n / n₀)²
-- **Algoritmos O(n log n):** T(n) ≈ T(n₀) × (n · log n) / (n₀ · log n₀)
+A tabela mostra as estimativas para n, n², n³ e n¹⁰. Os valores não são novas medições; são extrapolações matemáticas a partir da referência de 100.000 elementos.
 
-Exemplo para o Quick Sort em n¹⁰ = 10¹⁰:
-T ≈ 6,88 ms × (10¹⁰ × 10) / (10⁵ × 5) = 6,88 ms × 200 000 ≈ 1 376 000 ms ≈ **23 minutos**.
+| Algoritmo | n = 10 (estimado) | n² = 100 (estimado) | n³ = 1.000 (estimado) | n¹⁰ = 10¹⁰ (estimado) |
+|---|---:|---:|---:|---:|
+| Bubble Sort | 0,000173 ms | 0,017347 ms | 1,734695 ms | 5.496,9 anos |
+| Insertion Sort | 0,000005 ms | 0,000534 ms | 0,053432 ms | 169,3 anos |
+| Selection Sort | 0,000017 ms | 0,001691 ms | 0,169074 ms | 535,8 anos |
+| Merge Sort | 0,000483 ms | 0,009664 ms | 0,144956 ms | 80,5 minutos |
+| Quick Sort | 0,000212 ms | 0,004244 ms | 0,063665 ms | 35,4 minutos |
 
-Exemplo para o Bubble Sort em 10¹⁰:
-T ≈ 17,70 s × (10¹⁰ / 10⁵)² = 17,70 s × 10¹⁰ ≈ 1,77 × 10¹¹ s ≈ **5 600 anos**.
+**Atenção:** estimativas para tamanhos muito diferentes da referência devem ser interpretadas apenas como aproximações teóricas. O comportamento real também depende de memória, cache, JVM, distribuição dos dados e implementação. Em particular, o tempo real para 10¹⁰ elementos não pode ser obtido com segurança apenas por essa extrapolação.
 
-### Tabela comparativa (estimado × medido)
+### Exemplo de cálculo para n¹⁰
 
-| Algoritmo | n = 10 | n² = 100 | n³ = 1 000 | n¹⁰ = 10¹⁰ |
-|---|---|---|---|---|
-| **Bubble Sort** — estimado | 0,0002 ms | 0,0177 ms | 1,77 ms | ≈ 1,8 × 10¹¹ s (**≈ 5 600 anos**) |
-| Bubble Sort — medido | 0,0004 ms | 0,0153 ms | 1,03 ms | não executável |
-| **Insertion Sort** — estimado | 0,000006 ms | 0,0006 ms | 0,061 ms | ≈ 6,1 × 10⁹ s (**≈ 190 anos**) |
-| Insertion Sort — medido | 0,0003 ms | 0,0019 ms | 0,068 ms | não executável |
-| **Selection Sort** — estimado | 0,00002 ms | 0,0018 ms | 0,18 ms | ≈ 1,8 × 10¹⁰ s (**≈ 580 anos**) |
-| Selection Sort — medido | 0,0004 ms | 0,0051 ms | 0,22 ms | não executável |
-| **Merge Sort** — estimado | 0,0002 ms | 0,0046 ms | 0,070 ms | ≈ 2 300 s (**≈ 39 min**) |
-| Merge Sort — medido | 0,0008 ms | 0,0086 ms | 0,086 ms | não executável |
-| **Quick Sort** — estimado | 0,0001 ms | 0,0028 ms | 0,041 ms | ≈ 1 400 s (**≈ 23 min**) |
-| Quick Sort — medido | 0,0008 ms | 0,0043 ms | 0,051 ms | não executável |
+Para o Quick Sort, usando 10,6108 ms como tempo medido para 100.000 elementos:
 
-### Por que n¹⁰ não pode ser medido
+`T(10¹⁰) ≈ 10,6108 × [(10¹⁰ × log₂(10¹⁰)) / (100.000 × log₂(100.000))]`
 
-10¹⁰ números `int` ocupam 4 bytes cada, ou seja, **40 GB de memória** (o Merge Sort precisaria de mais 40 GB para o vetor auxiliar). Além disso, em Java um vetor pode ter no máximo cerca de 2,1 × 10⁹ posições, então `new int[10_000_000_000]` nem é permitido. Por isso, para n¹⁰ só existe o tempo **estimado**.
+O fator de crescimento aproximado é 200.000. Portanto, o resultado estimado é 2.122.160 ms, ou cerca de **35,4 minutos**.
 
-## 3. Análise dos resultados
+Para o Bubble Sort, a estimativa quadrática é:
 
-**Para entradas pequenas (n = 10 e n = 100) quase não há diferença.** Todos terminam em menos de 0,02 ms. Nesses tamanhos, o tempo é dominado por custos fixos (chamada de método, cronômetro, recursão), e não pelo número de comparações. Por isso os tempos medidos ficam **acima** do estimado: a fórmula só considera o crescimento e ignora esse custo fixo. Também por isso o Merge e o Quick, que fazem chamadas recursivas, chegam a ser um pouco mais lentos que o Insertion em n = 10.
+`T(10¹⁰) ≈ 17.346,9457 ms × (10¹⁰ / 100.000)²`
 
-**A partir de n = 1 000 a diferença aparece e cresce muito rápido.** Quando n aumenta 10 vezes:
-- os algoritmos O(n²) ficam cerca de **100 vezes** mais lentos (de n = 10 000 para 100 000, o Bubble foi de 121 ms para 17 703 ms);
-- os algoritmos O(n log n) ficam só cerca de **12 vezes** mais lentos (o Quick foi de 0,59 ms para 6,88 ms).
+O resultado aproximado é **5.496,9 anos**.
 
-**Em n¹⁰ a diferença vira algo como "minutos contra séculos".** Quick e Merge levariam dezenas de minutos; os três quadráticos levariam de 190 a 5 600 anos. A escolha do algoritmo importa muito mais do que a velocidade do computador: um computador mil vezes mais rápido ainda levaria anos com o Bubble Sort.
+## 3. Por que n¹⁰ não foi medido
 
-**Entre os quadráticos**, o Insertion foi o mais rápido e o Bubble o mais lento (cerca de 30 vezes mais lento que o Insertion em n = 100 000). O Bubble faz uma troca completa (três atribuições) para cada par fora de ordem; o Insertion apenas desloca elementos e para assim que encontra a posição certa.
+Um vetor com 10¹⁰ valores do tipo `int` exigiria aproximadamente 40 GB apenas para armazenar os elementos (considerando 4 bytes por inteiro), sem contar memória adicional usada pelo programa. Além disso, esse tamanho ultrapassa o limite prático de posições de um único vetor Java. Por isso, o caso n¹⁰ foi tratado como **estimativa teórica**, e não como execução medida.
 
-**Entre os O(n log n)**, o Quick foi cerca de 1,7 vez mais rápido que o Merge. O Merge copia todos os elementos para o vetor auxiliar e depois de volta a cada nível da recursão; o Quick reorganiza os elementos no próprio vetor.
+## 4. Análise dos resultados
 
-**Limitações da estimativa:** a extrapolação supõe que o computador se comporta igual em qualquer tamanho. Na prática, em tamanhos enormes, os dados não cabem no cache nem na memória RAM, e o tempo real seria ainda **maior** que o estimado.
+Na execução registrada, o **Quick Sort** apresentou o menor tempo para 100.000 elementos (10,6108 ms), seguido pelo **Merge Sort** (24,1593 ms). Entre os algoritmos quadráticos, o **Insertion Sort** foi o mais rápido (534,3241 ms), seguido pelo **Selection Sort** (1.690,7390 ms); o **Bubble Sort** apresentou o maior tempo (17.346,9457 ms).
 
-### Ranking final (n grande, dados aleatórios)
+A diferença entre os algoritmos fica mais evidente conforme o tamanho do vetor aumenta. Os algoritmos quadráticos têm crescimento proporcional a n² na análise teórica, enquanto Merge Sort e Quick Sort têm crescimento O(n log n) nos casos considerados. Isso ajuda a explicar por que os algoritmos O(n log n) foram mais rápidos nos maiores vetores desta execução.
 
-1. **Quick Sort** — mais rápido
-2. **Merge Sort** — quase tão rápido e com tempo garantido O(n log n)
-3. **Insertion Sort** — o melhor dos quadráticos; bom para vetores pequenos ou quase ordenados
-4. **Selection Sort**
-5. **Bubble Sort** — mais lento
+Os resultados para entradas pequenas devem ser interpretados com cuidado: os tempos são muito baixos e podem sofrer influência significativa dos custos fixos de execução e da precisão do cronômetro. Além disso, a tabela registra uma execução específica, não uma garantia de que a mesma ordem será observada em todos os computadores e cenários.
+
+## 5. Limitações
+
+- A medição de 100.000 elementos utilizou 2 repetições, enquanto os tamanhos menores utilizaram 5; portanto, a média do maior tamanho tem menor quantidade de amostras.
+- Os tempos dependem do hardware, da JVM, do sistema operacional e das condições do computador durante a execução.
+- As estimativas pressupõem que o crescimento teórico continue seguindo a mesma aproximação e não representam uma medição real.
+- O Quick Sort pode apresentar comportamento diferente conforme a distribuição dos dados e a escolha do pivô; a complexidade O(n log n) é a referência média considerada nesta comparação.
+
+## 6. Ranking observado para 100.000 elementos
+
+1. **Quick Sort** — 10,6108 ms.
+2. **Merge Sort** — 24,1593 ms.
+3. **Insertion Sort** — 534,3241 ms.
+4. **Selection Sort** — 1.690,7390 ms.
+5. **Bubble Sort** — 17.346,9457 ms.
+
+Esse ranking corresponde aos tempos da execução apresentada neste documento.

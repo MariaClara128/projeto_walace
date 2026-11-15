@@ -114,4 +114,78 @@ public class Utils {
 
   }
 
+  public static int[] lerArquivo(String caminho) {
+
+    int[] vetor = new int[16];
+
+    int quantidade = 0;
+
+    try ( java.io.BufferedReader leitor = new java.io.BufferedReader( new java.io.FileReader( caminho ) ) ) {
+
+      String linha = leitor.readLine();
+
+      while( linha != null ) {
+
+        String[] partes = linha.trim().split("[\\s,;]+");
+
+        for(int i = 0; i < partes.length; i++) {
+
+          if( partes[i].isEmpty() ) {
+
+            continue;
+
+          }
+
+          try {
+
+            int numero = Integer.parseInt( partes[i] );
+
+            if( quantidade == vetor.length ) {
+
+              int[] maior = new int[vetor.length * 2];
+
+              for(int j = 0; j < quantidade; j++) {
+
+                maior[j] = vetor[j];
+
+              } // FOR COPIA
+
+              vetor = maior;
+
+            }
+
+            vetor[quantidade] = numero;
+
+            quantidade++;
+
+          } catch (NumberFormatException erro) {
+
+            System.out.println("Valor ignorado no arquivo: " + partes[i]);
+
+          }
+
+        } // FOR PARTES DA LINHA
+
+        linha = leitor.readLine();
+
+      } // WHILE LINHAS
+
+    } catch (java.io.IOException erro) {
+
+      return null;
+
+    }
+
+    int[] resultado = new int[quantidade];
+
+    for(int i = 0; i < quantidade; i++) {
+
+      resultado[i] = vetor[i];
+
+    } // FOR ELEMENTOS VETOR
+
+    return resultado;
+
+  }
+
 }

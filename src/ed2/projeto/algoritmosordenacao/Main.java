@@ -2,6 +2,8 @@ package ed2.projeto.algoritmosordenacao;
 
 public class Main {
 
+  private static final String ARQUIVO_PADRAO = "dados/numeros.txt";
+
   private static int[] dados;
 
   public static void main(String[] args) {
@@ -13,8 +15,9 @@ public class Main {
       System.out.println("\nPROJETO DE ALGORITMOS DE ORDENACAO");
       System.out.println("1 - Digitar numeros");
       System.out.println("2 - Gerar numeros automaticamente");
-      System.out.println("3 - Escolher algoritmo e ordenar");
-      System.out.println("4 - Comparar o tempo dos algoritmos");
+      System.out.println("3 - Ler numeros de um arquivo .txt");
+      System.out.println("4 - Escolher algoritmo e ordenar");
+      System.out.println("5 - Comparar o tempo dos algoritmos");
       System.out.println("0 - Sair");
 
       opcao = lerInteiro("Escolha uma opcao: ");
@@ -30,10 +33,14 @@ public class Main {
           break;
 
         case 3:
-          ordenarDados();
+          lerArquivo();
           break;
 
         case 4:
+          ordenarDados();
+          break;
+
+        case 5:
           compararAlgoritmos();
           break;
 
@@ -170,11 +177,49 @@ public class Main {
 
   }
 
+  private static void lerArquivo() {
+
+    System.out.print("Caminho do arquivo (ENTER para " + ARQUIVO_PADRAO + "): ");
+
+    String caminho = lerLinha();
+
+    if( caminho.isEmpty() ) {
+
+      caminho = ARQUIVO_PADRAO;
+
+    }
+
+    int[] lidos = Utils.lerArquivo( caminho );
+
+    if( lidos == null ) {
+
+      System.out.println("Nao foi possivel ler o arquivo: " + caminho);
+
+      return;
+
+    }
+
+    if( lidos.length == 0 ) {
+
+      System.out.println("O arquivo nao possui numeros.");
+
+      return;
+
+    }
+
+    dados = lidos;
+
+    System.out.println(dados.length + " numeros lidos do arquivo:");
+
+    Utils.imprimirVetor( dados );
+
+  }
+
   private static void ordenarDados() {
 
     if( dados == null || dados.length == 0 ) {
 
-      System.out.println("Primeiro digite ou gere os numeros.");
+      System.out.println("Primeiro digite, gere ou leia os numeros.");
 
       return;
 
@@ -251,7 +296,7 @@ public class Main {
 
     if( dados == null || dados.length == 0 ) {
 
-      System.out.println("Primeiro digite ou gere os numeros.");
+      System.out.println("Primeiro digite, gere ou leia os numeros.");
 
       return;
 

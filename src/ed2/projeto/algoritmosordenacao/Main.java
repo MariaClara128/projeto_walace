@@ -8,6 +8,8 @@ public class Main {
 
   public static void main(String[] args) {
 
+    carregarArquivoInicial();
+
     int opcao;
 
     do {
@@ -54,6 +56,26 @@ public class Main {
       } // SWITCH
 
     } while( opcao != 0 );
+
+  }
+
+  private static void carregarArquivoInicial() {
+
+    int[] lidos = Utils.lerArquivo( ARQUIVO_PADRAO );
+
+    if( lidos == null || lidos.length == 0 ) {
+
+      System.out.println("Aviso: nao foi possivel carregar " + ARQUIVO_PADRAO + ". Use as opcoes 1, 2 ou 3.");
+
+      return;
+
+    }
+
+    dados = lidos;
+
+    System.out.println(dados.length + " numeros carregados de " + ARQUIVO_PADRAO + ":");
+
+    Utils.imprimirVetor( dados );
 
   }
 

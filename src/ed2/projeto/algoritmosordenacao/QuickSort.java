@@ -1,110 +1,72 @@
 package ed2.projeto.algoritmosordenacao;
 
-<<<<<<< HEAD
-// Ordena usando um pivo para separar os menores e os maiores elementos.
-=======
->>>>>>> 92bd3a25a35d47038ff86ea5db5b88db734c1b36
 public class QuickSort implements IAlgoritmoOrdenacao {
 
-    @Override
-    public void ordenarVetor(int[] vetor) {
-<<<<<<< HEAD
-        if (vetor.length > 1) {
-            quickSort(vetor, 0, vetor.length - 1);
-        }
+  @Override
+    
+  public void ordenarVetor(int[] vetor) {
+    if (vetor == null || vetor.length <= 1) {
+      return;
+    }
+    this.quickSort( vetor, 0, ( vetor.length - 1 ) );
+  }
+
+  public void quickSort(int[] vetor, int inicio, int fim) {
+
+    if( inicio < fim ) {
+
+      int posicaoPivo = this.particiona( vetor, inicio, fim );
+
+      this.quickSort( vetor, inicio, posicaoPivo );
+      this.quickSort( vetor, posicaoPivo + 1, fim );
+
     }
 
-    private void quickSort(int[] vetor, int inicio, int fim) {
-        if (inicio < fim) {
-            int posicaoPivo = particiona(vetor, inicio, fim);
-            quickSort(vetor, inicio, posicaoPivo);
-            quickSort(vetor, posicaoPivo + 1, fim);
-        }
-    }
+  }
 
-    // Particionamento de Hoare: devolve a divisao entre as duas partes.
-    private int particiona(int[] vetor, int inicio, int fim) {
-        int pivo = vetor[inicio + (fim - inicio) / 2];
-        int i = inicio - 1;
-        int j = fim + 1;
+  private int particiona(int[] vetor, int inicio, int fim) {
 
-        while (true) {
-            do {
-                j--;
-            } while (vetor[j] > pivo);
+    int pivo = vetor[ ( inicio + fim ) / 2 ];
 
-            do {
-                i++;
-            } while (vetor[i] < pivo);
+    int indiceI = inicio - 1;
+    int indiceJ = fim + 1;
 
-            if (i >= j) {
-                return j;
-            }
+    while( true ) {
 
-            int auxiliar = vetor[i];
-            vetor[i] = vetor[j];
-            vetor[j] = auxiliar;
-=======
+      do {
 
-        ordenar(vetor, 0, vetor.length - 1);
-    }
+        indiceI++;
 
-    // Organiza as partes do vetor
-    private void ordenar(int[] vetor, int inicio, int fim) {
+      } while( vetor[indiceI] < pivo );
 
-        int i = inicio;
-        int j = fim;
+      do {
 
-        // Escolhe o elemento do meio como pivo
-        int pivo = vetor[(inicio + fim) / 2];
+        indiceJ--;
 
-        while (i <= j) {
+      } while( vetor[indiceJ] > pivo );
 
-            // Procura um numero maior ou igual ao pivo
-            while (vetor[i] < pivo) {
-                i++;
-            }
+      if( indiceI >= indiceJ ) {
 
-            // Procura um numero menor ou igual ao pivo
-            while (vetor[j] > pivo) {
-                j--;
-            }
+        return indiceJ;
 
-            // Troca os elementos que estao nas posicoes erradas
-            if (i <= j) {
+      }
 
-                int aux = vetor[i];
+      int aux = vetor[indiceI];
 
-                vetor[i] = vetor[j];
+      vetor[indiceI] = vetor[indiceJ];
 
-                vetor[j] = aux;
+      vetor[indiceJ] = aux;
 
-                i++;
-                j--;
-            }
-        }
+    } // WHILE
 
-        // Ordena a parte esquerda
-        if (inicio < j) {
-            ordenar(vetor, inicio, j);
-        }
+  }
 
-        // Ordena a parte direita
-        if (i < fim) {
-            ordenar(vetor, i, fim);
->>>>>>> 92bd3a25a35d47038ff86ea5db5b88db734c1b36
-        }
-    }
+  @Override
+    
+  public String toString() {
+    
+    return "QuickSort";
+    
+  }
 
-    @Override
-    public String toString() {
-<<<<<<< HEAD
-        return "Quick Sort";
-    }
 }
-=======
-
-        return "Quick Sort";
-    }
-}
->>>>>>> 92bd3a25a35d47038ff86ea5db5b88db734c1b36

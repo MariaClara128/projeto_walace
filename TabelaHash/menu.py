@@ -16,7 +16,7 @@ while True: # loop infinito que só se encerra quando for selecionada a opção 
     while opcao not in ['1','2','3','4','5']: # só é possível digitar um número que está dentro das opções
         opcao = input("Escolha a ação que você quer realizar: \n[1] Inserir novo aluno\n[2] Buscar aluno\n[3] Remover aluno\n[4] Exibir todos os alunos cadastrados\n[5] Encerrar sistema\n")
         if opcao not in ['1','2','3','4','5']:
-            print(f"Essa opção não existe, tente novamente.")
+            print("Essa opção não existe, tente novamente.")
 
     # Inserção do aluno
     if opcao == '1':
@@ -38,7 +38,7 @@ while True: # loop infinito que só se encerra quando for selecionada a opção 
 
     # Mostrar a tabela
     elif opcao == '4':
-        tabela.mostrar_tabela() # chama o método de amostra
+        tabela.mostrar_tabela() # chama o método de exibição
 
     # Finalização do sistema
     elif opcao == '5':

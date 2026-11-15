@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Java
+*.class
+bin/
+out/
+
+# IDEs / editores
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
